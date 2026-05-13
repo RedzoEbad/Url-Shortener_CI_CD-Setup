@@ -25,7 +25,7 @@ jobs:
 
       - name: Run tests
         run: npm test
-        
+
 # Snyk is a security tool that finds problems in your code and dependencies.
 # If your project uses an old library with a known hack risk, Snyk will detect it and warn you.
 
@@ -35,3 +35,15 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: test --severity-threshold=high
+
+# Code quality issues
+# Messy or hard-to-maintain code
+# Duplicate code
+# Unused variables
+        
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          
+        
