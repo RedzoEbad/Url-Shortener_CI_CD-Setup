@@ -45,5 +45,50 @@ jobs:
         uses: SonarSource/sonarqube-scan-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          
+
         
+      # =========================
+      # 8. Start MongoDB (for tests)
+      # =========================
+      - name: Start MongoDB
+        run: |
+          docker run -d --name mongodb -p 27017:27017 mongo:6
+          sleep 5
+
+
+       # =========================
+      # 9. Build & Start App (smoke test)
+      # =========================
+      - name: Build & Start Server
+        env:
+          MONGODB_URI: mongodb://localhost:27017/test
+        run: |
+          npm run build
+          npm start &
+
+          for i in {1..15}; do
+            curl -f http://localhost:3000/api/users/router && break
+            echo "Waiting..."
+            sleep 3
+          done
+
+
+        # =========================
+      # 10. API Tests (Newman)
+      # =========================
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run API tests
+        run: newman run ./test/TodoApp.postman_collection.json --env-var "baseUrl=http://localhost:3000"
+
+
+        # =========================
+      # 11. Build Docker Image (NO CACHE)
+      # =========================
+      - name: Build Docker image
+        run: |
+          docker build --no-cache \
+            -t ${{ secrets.DOCKER_USERNAME }}/my-todo-app:${{ github.sha }} .
+      
+      

@@ -1,0 +1,69 @@
+{
+  "info": {
+    "_postman_id": "b22812b9-a5cf-48c8-b331-cf6962926a2a",
+    "name": "TodoApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET todos",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/users/router",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "router"]
+        }
+      }
+    },
+    {
+      "name": "POST todo",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let res = pm.response.json();",
+              "",
+              "// safely extract todo id",
+              "if (res && res.todo && res.todo._id) {",
+              "    pm.environment.set('todoId', res.todo._id);",
+              "    console.log('Saved Todo ID:', res.todo._id);",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"text\": \"New todo item\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/users/router",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "router"]
+        }
+      }
+    },
+    {
+      "name": "DELETE todo",
+      "request": {
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/api/users/router?id={{todoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "users", "router"]
+        }
+      }
+    }
+  ]
+}

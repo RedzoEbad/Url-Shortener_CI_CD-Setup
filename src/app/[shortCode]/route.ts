@@ -4,10 +4,10 @@ import { Url } from '@/types/url';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { shortCode: string } }
+  { params }: { params: Promise<{ shortCode: string }> }
 ) {
   try {
-    const { shortCode } = params;
+    const { shortCode } = await params;
 
     if (!shortCode) {
       return NextResponse.json(
