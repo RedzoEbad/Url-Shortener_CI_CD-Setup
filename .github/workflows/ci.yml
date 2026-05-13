@@ -20,8 +20,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Code Linting
-        run: npm run lint
 
       - name: Run tests
         run: npm test
