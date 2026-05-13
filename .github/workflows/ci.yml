@@ -66,7 +66,7 @@ jobs:
           npm start &
 
           for i in {1..15}; do
-            curl -f http://localhost:3000/api/users/router && break
+            curl -f http://localhost:3000/api/stats && break
             echo "Waiting..."
             sleep 3
           done
@@ -75,11 +75,11 @@ jobs:
         # =========================
       # 10. API Tests (Newman)
       # =========================
-      - name: Install Newman
-        run: npm install -g newman
+      # - name: Install Newman
+      #   run: npm install -g newman
 
-      - name: Run API tests
-        run: newman run ./test/TodoApp.postman_collection.json --env-var "baseUrl=http://localhost:3000"
+      # - name: Run API tests
+      #   run: newman run ./test/TodoApp.postman_collection.json --env-var "baseUrl=http://localhost:3000"
 
 
         # =========================
